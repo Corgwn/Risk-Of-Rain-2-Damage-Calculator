@@ -23,28 +23,12 @@ def meat_hook(hook_count, clover_count, coefficient):
     return avg_damage
 
 
-def kjaro(kjaro_count, clover_count, coefficient):
-    chance = coefficient * .08
-    chance = 1 - ((1 - chance) ** (clover_count + 1))
-    if kjaro_count == 1:
-        avg_damage = 5 * chance
-    elif kjaro_count > 1:
-        avg_damage = (2.5 + (2.5 * kjaro_count)) * chance
-    else:
-        avg_damage = 0
-    return avg_damage
+def kjaro(kjaro_count):
+    return (3 + (3 * kjaro_count))
 
 
-def runald(runald_count, clover_count, coefficient):
-    chance = coefficient * .08
-    chance = 1 - ((1 - chance) ** (clover_count + 1))
-    if runald_count == 1:
-        avg_damage = 2.5 * chance
-    elif runald_count > 1:
-        avg_damage = (1.25 + (1.25 * runald_count)) * chance
-    else:
-        avg_damage = 0
-    return avg_damage
+def runald(runald_count):
+    return (2.5 + (2.5 * runald_count))
 
 
 def sticky(sticky_count, clover_count, coefficient):
@@ -92,8 +76,6 @@ def calculate_damage(item_counts, base_damage=1.0, coefficient=1.0, proc=None, p
     damage_sum = base_damage
     damage_sum += base_damage * sticky(item_counts['Sticky Bomb'], item_counts['57 Leaf Clover'], coefficient)
     damage_sum += tri_tip(item_counts['Tri-Tip Dagger'], item_counts['57 Leaf Clover'], coefficient)
-    damage_sum += base_damage * kjaro(item_counts["Kjaro's Band"], item_counts['57 Leaf Clover'], coefficient)
-    damage_sum += base_damage * runald(item_counts["Runald's Band"], item_counts['57 Leaf Clover'], coefficient)
 
     if ('Ukulele' not in [proc, proc_2, proc_3]) and (item_counts['Ukulele'] >= 1):
         damage_sum += (chance(.25, item_counts['57 Leaf Clover'], coefficient) * (1 + (2 * item_counts['Ukulele']))
@@ -120,7 +102,7 @@ def calculate_damage(item_counts, base_damage=1.0, coefficient=1.0, proc=None, p
     return damage_sum
 
 
-def syringSpeed(num_syringes):
+def syringeSpeed(num_syringes):
     #Each syringe gives .15 increase to attack speed
     return 0.15 * num_syringes
 

@@ -1,11 +1,11 @@
-from funcs import calculate_damage, syringeSpeed, predatorySpeed
+from funcs import calculate_damage, syringeSpeed, predatorySpeed, kjaro, runald
 import os
 
 def main():
     items = ['Sticky Bomb', 'Tri-Tip Dagger', 'Lens-Makers Glasses', 'Ukulele', 'AtG Mk1',
-             'Kjaro\'s Band', 'Runald\'s Band', 'Harvester\'s Scythe', 'Predatory Instincts',
+             "Kjaro's Band", "Runald's Band", "Harvester's Scythe", 'Predatory Instincts',
              '57 Leaf Clover', 'Brilliant Behemoth', 'Sentient Meat Hook', 'Shaped Glass',
-             'Soldier\'s Syringe']
+             "Soldier's Syringe"]
     item_counts = {}
     with open('input_file.txt', 'a') as f:
         if os.path.getsize('input_file.txt') == 0:
@@ -31,7 +31,9 @@ def main():
 
     with open('output_file.txt', 'w') as f:
         f.write('%d' % (damage_increase * 100) + '% damage increase\n' +
-                '%d' % (max_attack_speed * 100) + '% attack speed increase\n')
+                '%d' % (max_attack_speed * 100) + '% attack speed increase\n'
+                '%d' % ((kjaro(item_counts["Kjaro's Band"]) + runald(item_counts["Runald's Band"])) * 100)
+                + '% damage on Runald/Kjaro\'s Band\n')
 
     print('%d' % (damage_increase * 100) + '% damage')
 
