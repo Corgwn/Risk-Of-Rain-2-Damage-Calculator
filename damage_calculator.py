@@ -1,11 +1,11 @@
-from funcs import calculate_damage, syringeSpeed, predatorySpeed, kjaro, runald
+from funcs import calc_dmg, syringeSpeed, predatorySpeed, kjaro, runald
 import os
 
 def main():
     items = ['Sticky Bomb', 'Tri-Tip Dagger', 'Lens-Makers Glasses', 'Ukulele', 'AtG Mk1',
              "Kjaro's Band", "Runald's Band", "Harvester's Scythe", 'Predatory Instincts',
              '57 Leaf Clover', 'Brilliant Behemoth', 'Sentient Meat Hook', 'Shaped Glass',
-             "Soldier's Syringe"]
+             "Soldier's Syringe", 'Purity']
     item_counts = {}
     with open('input_file.txt', 'a') as f:
         if os.path.getsize('input_file.txt') == 0:
@@ -19,23 +19,25 @@ def main():
             parts[1] = int(parts[1][1:])
             item_counts[parts[0]] = parts[1]
 
-    original_damage = int(input('Enter the base damage of the attack: __%\n')) / 100
+    orig_dmg = int(input('Enter the base dmg of the attack: __%\n')) / 100
+    orig_coeff = int(input('Enter the base proc coefficient of the attack: __%\n')) / 100
 
-    damage_increase = 1
+    dmg_increase = 1
     if item_counts['Shaped Glass'] >= 1:
-        damage_increase *= 2 ** (item_counts['Shaped Glass'])
-    damage_increase = calculate_damage(item_counts, base_damage=original_damage)    
+        dmg_increase *= 2 ** (item_counts['Shaped Glass'])
+    luck = item_counts['57 Leaf Clover'] - item_counts['Purity']
+    dmg_increase = calc_dmg(item_counts, base_dmg=orig_dmg, coefficient=orig_coeff, luck=luck)    
 
     max_attack_speed = (1 + syringeSpeed(item_counts["Soldier's Syringes"]) 
                         + predatorySpeed(item_counts['Predatory Instincts']))
 
     with open('output_file.txt', 'w') as f:
-        f.write('%d' % (damage_increase * 100) + '% damage increase\n' +
+        f.write('%d' % (dmg_increase * 100) + '% dmg increase\n' +
                 '%d' % (max_attack_speed * 100) + '% attack speed increase\n'
                 '%d' % ((kjaro(item_counts["Kjaro's Band"]) + runald(item_counts["Runald's Band"])) * 100)
-                + '% damage on Runald/Kjaro\'s Band\n')
+                + '% dmg on Runald/Kjaro\'s Band\n')
 
-    print('%d' % (damage_increase * 100) + '% damage')
+    print('%d' % (dmg_increase * 100) + '% dmg')
 
 
 if __name__ == '__main__':
